@@ -32,6 +32,10 @@ echo \
 
 apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
+# Required for dockerd to work in some environments. See https://github.com/WhitewaterFoundry/Pengwin/issues/485#issuecomment-518028465
+# sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
+# sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
+
 ####################
 
 # Create docker group and add user to it
