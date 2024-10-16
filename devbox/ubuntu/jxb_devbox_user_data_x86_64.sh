@@ -54,3 +54,18 @@ sudo -u ubuntu rm $UBUNTU_HOME/miniconda3/miniconda.sh
 sudo -u ubuntu $UBUNTU_HOME/miniconda3/condabin/conda init bash
 
 ####################
+
+# Install nodeJS
+
+sudo -u ubuntu curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+
+sudo -u ubuntu source ~/.bashrc
+sudo -u ubuntu npm install --global yarn
+
+####################
+
+# Install java
+
+sudo apt install default-jdk -y
+
+####################
