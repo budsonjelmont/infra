@@ -12,11 +12,11 @@ data "aws_ami" "jxb_devbox" {
 }
 
 # data "aws_subnet" "jxb_devbox" {
-#   id = "subnet_name_see_conf.private.tf"
+#   id = "subnet_id_see_conf.private.tf"
 # }
 
 # data "aws_ec2_managed_prefix_list" "jxb_devbox" {
-#   id = "prefix_list_see_conf.private.tf"
+#   id = "prefix_list_id_see_conf.private.tf"
 # }
 
 # data "aws_route53_zone" "jxb_devbox" {
