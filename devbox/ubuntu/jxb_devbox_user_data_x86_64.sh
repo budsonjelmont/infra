@@ -55,6 +55,12 @@ sudo -u ubuntu $UBUNTU_HOME/miniconda3/condabin/conda init bash
 
 ####################
 
+# Install uv
+
+# sudo -u ubuntu curl -LsSf https://astral.sh/uv/install.sh | bash # Not tested
+
+####################
+
 # Install nodeJS
 
 sudo -u ubuntu curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
@@ -67,5 +73,14 @@ sudo -u ubuntu npm install --global yarn
 # Install java
 
 sudo apt install default-jdk -y
+
+####################
+
+# Install lazygit
+
+sudo -u ubuntu LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
+sudo -u curl ubuntu -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+sudo -u ubuntu tar xf lazygit.tar.gz lazygit
+sudo install lazygit -D -t /usr/local/bin/
 
 ####################
