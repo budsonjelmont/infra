@@ -15,11 +15,11 @@ resource "aws_instance" "jxb_devbox" {
     volume_size = 100
   }
   user_data                   = file("${path.module}/jxb_devbox_user_data_x86_64.sh")
-  user_data_replace_on_change = true
+  user_data_replace_on_change = true # see below
   lifecycle {
     ignore_changes = [
       ami,
-      user_data
+      user_data # commenting this out would refresh the EC2 instance each time the user data script changes since user_data_replace_on_change = true
     ]
   }
   metadata_options {
