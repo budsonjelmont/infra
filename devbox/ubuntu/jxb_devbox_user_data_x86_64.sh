@@ -55,31 +55,33 @@ sudo -u ubuntu $UBUNTU_HOME/miniconda3/condabin/conda init bash
 
 ####################
 
-# Install uv
-
-# sudo -u ubuntu curl -LsSf https://astral.sh/uv/install.sh | bash # Not tested
-
-####################
-
-# Install nodeJS
-
-sudo -u ubuntu curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-
-sudo -u ubuntu source ~/.bashrc
-sudo -u ubuntu npm install --global yarn
-
-####################
-
 # Install java
 
 sudo apt install default-jdk -y
 
 ####################
 
+# Install nodeJS
+
+sudo -u ubuntu bash -c "cd $UBUNTU_HOME && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash"
+sudo -u ubuntu bash -c "export NVM_DIR=\"$UBUNTU_HOME/.nvm\" && [ -s \"$UBUNTU_HOME/.nvm/nvm.sh\" ] && source \"$UBUNTU_HOME/.nvm/nvm.sh\" &&  nvm install --lts && npm install --global yarn"
+
+####################
+
+# Install uv
+
+sudo -u ubuntu bash -c "curl -LsSf https://astral.sh/uv/install.sh | bash"
+
+####################
+
+# TODO Commands below don't work in non-interactive shell
+
+####################
+
 # Install lazygit
 
 sudo -u ubuntu LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
-sudo -u curl ubuntu -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+sudo -u ubuntu curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
 sudo -u ubuntu tar xf lazygit.tar.gz lazygit
 sudo install lazygit -D -t /usr/local/bin/
 
