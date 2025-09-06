@@ -1,3 +1,5 @@
 .terraform/
 *.backup
 *.private.tf
+**qdx**
+**QDX**
