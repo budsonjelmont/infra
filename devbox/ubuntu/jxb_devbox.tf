@@ -1,9 +1,12 @@
 resource "aws_instance" "jxb_devbox" {
-  tags = {
-    Name = "jxb_devbox"
-  }
+  tags = merge(
+    {
+      Name = var.instance_name_tag
+    },
+    var.tags
+  )
   ami           = data.aws_ami.jxb_devbox.id
-  instance_type = "t2.micro"
+  instance_type = var.instance_type
   iam_instance_profile = aws_iam_instance_profile.jxb_devbox.name
   key_name      = aws_key_pair.jxb_devbox.key_name
   network_interface {
@@ -11,10 +14,10 @@ resource "aws_instance" "jxb_devbox" {
     device_index         = 0
   }
   root_block_device {
-    volume_type = "gp3"
-    volume_size = 100
+    volume_type = var.root_volume_type
+    volume_size = var.root_volume_size_gb
   }
-  user_data                   = file("${path.module}/jxb_devbox_user_data_x86_64.sh")
+  user_data                   = file("${path.module}/${var.user_data_file}")
   user_data_replace_on_change = true # see below
   lifecycle {
     ignore_changes = [
@@ -33,7 +36,7 @@ resource "aws_network_interface" "jxb_devbox" {
 }
 
 resource "aws_security_group" "jxb_devbox" {
-  name   = "jxb_devbox"
+  name   = var.security_group_name
   vpc_id = data.aws_subnet.jxb_devbox.vpc_id
 }
 
@@ -70,7 +73,7 @@ resource "aws_key_pair" "jxb_devbox" {
 }
 
 resource "aws_iam_role" "jxb_devbox" {
-  name = "jxb_devbox_role"
+  name = var.iam_role_name
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -87,13 +90,13 @@ resource "aws_iam_role" "jxb_devbox" {
 }
 
 resource "aws_iam_role_policy" "jxb_devbox" {
-  name        = "jxb_devbox_policy"
+  name        = var.iam_policy_name
   role        = aws_iam_role.jxb_devbox.id
   policy      = data.aws_iam_policy_document.jxb_devbox.json
 }
 
 resource "aws_iam_instance_profile" "jxb_devbox" {
-  name = "jxb_devbox_profile"
+  name = var.iam_instance_profile_name
   role = aws_iam_role.jxb_devbox.name
 }
 
@@ -104,3 +107,43 @@ resource "aws_iam_instance_profile" "jxb_devbox" {
 #   ttl     = 300
 #   records = aws_network_interface.jxb_devbox.private_ip_list
 # }
+
+data "aws_subnet" "jxb_devbox" {
+  id = var.subnet_id
+}
+
+data "aws_ec2_managed_prefix_list" "jxb_devbox" {
+  id = var.prefix_list_id
+}
+
+// Not in use
+# data "aws_route53_zone" "jxb_devbox" {
+#   zone_id = "Z06994823HP6ZIULD641H"
+# }
+
+data "aws_iam_policy_document" "jxb_devbox" {
+  statement {
+    sid    = "AllowS3Read"
+    effect = "Allow"
+    actions = [
+      "s3:GetObject"
+    ]
+    resources = var.s3_bucket_arns
+  }
+}
+
+data "aws_ami" "jxb_devbox" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = [var.ami_name_filter]
+  }
+
+  owners = var.ami_owners
+}
+
+locals {
+  ssh_keyname = var.ssh_key_name
+  ssh_pubkey  = var.ssh_public_key
+}

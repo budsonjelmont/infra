@@ -3,3 +3,14 @@
 *.private.tf
 **qdx**
 **QDX**
+
+# Terraform variable files (keep example.tfvars in git)
+*.tfvars
+!example.tfvars
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Terraform lock file (optional - uncomment to ignore)
+# .terraform.lock.hcl
