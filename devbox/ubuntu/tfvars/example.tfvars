@@ -1,5 +1,5 @@
 # Example tfvars file - DO NOT commit real values to git
-# Copy this to ~/.tfvars/devbox/<environment>.tfvars and update with actual values
+# Copy this to <environment>.tfvars and update with actual values
 
 # AWS Configuration
 aws_region  = "us-east-1"
