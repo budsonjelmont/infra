@@ -27,9 +27,8 @@ ssh_public_key = "ssh-rsa AAAA...replace_with_your_actual_public_key..."
 user_data_file = "jxb_devbox_user_data_x86_64.sh"
 
 # S3 Bucket Access (for IAM policy)
-s3_bucket_arns = [
-  "arn:aws:s3:::qdx-igf-sst-bx-install-assets-dev/*",
-  "arn:aws:s3:::qdx-igf-sst-bx-install-assets-eu-dev/*"
+readonly_s3_bucket_arns = [
+  "arn:aws:s3:::read-only-bucket/*",
 ]
 
 # Resource Names (optional, defaults are provided)

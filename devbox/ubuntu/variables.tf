@@ -74,7 +74,7 @@ variable "user_data_file" {
   default     = "jxb_devbox_user_data_x86_64.sh"
 }
 
-variable "s3_bucket_arns" {
+variable "readonly_s3_bucket_arns" {
   description = "List of S3 bucket ARNs for IAM policy (including /* suffix)"
   type        = list(string)
 }

@@ -8,17 +8,17 @@ Templates for a general purpose dev environment. Each subdirectory under `/devbo
 
 ## Generate execution plan
 ```bash
-cd devbox/ubuntu/ && terraform plan -var-file="envs/my_env.tfvars"
+cd devbox/ubuntu/ && terraform plan -var-file="tfvars/my_env.tfvars"
 ```
 
 ## Deploy stack
 ```bash
-cd devbox/ubuntu/ && terraform apply -var-file="envs/my_env.tfvars"
+cd devbox/ubuntu/ && terraform apply -var-file="tfvars/my_env.tfvars"
 ```
 
 ## Destroy stack
 ```bash
-cd devbox/ubuntu/ && terraform destroy -var-file="envs/my_env.tfvars"
+cd devbox/ubuntu/ && terraform destroy -var-file="tfvars/my_env.tfvars"
 ```
 
 ## Connect to the instance

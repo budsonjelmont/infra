@@ -128,7 +128,7 @@ data "aws_iam_policy_document" "jxb_devbox" {
     actions = [
       "s3:GetObject"
     ]
-    resources = var.s3_bucket_arns
+    resources = var.readonly_s3_bucket_arns
   }
 }
 
