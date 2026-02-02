@@ -1,4 +1,4 @@
-# Example tfvars file - DO NOT commit real values to git
+# Example tfvars file
 # Copy this to <environment>.tfvars and update with actual values
 
 # AWS Configuration
