@@ -24,7 +24,7 @@ ssh_key_name   = "jxb_ec2_rsa_keypair"
 ssh_public_key = "ssh-rsa AAAA...replace_with_your_actual_public_key..."
 
 # User Data Script
-user_data_file = "jxb_devbox_user_data_x86_64.sh"
+user_data_file = "scripts/jxb_devbox_user_data_x86_64.sh"
 
 # S3 Bucket Access (for IAM policy)
 readonly_s3_bucket_arns = [

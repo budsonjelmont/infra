@@ -71,7 +71,7 @@ variable "ssh_public_key" {
 variable "user_data_file" {
   description = "Path to the user data script file (relative to module)"
   type        = string
-  default     = "jxb_devbox_user_data_x86_64.sh"
+  default     = "scripts/jxb_devbox_user_data_x86_64.sh"
 }
 
 variable "readonly_s3_bucket_arns" {
