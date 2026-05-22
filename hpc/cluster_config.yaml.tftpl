@@ -1,0 +1,143 @@
+# ParallelCluster 3.14 SLURM cluster configuration template.
+# Rendered by Terraform via templatefile() in cluster.tf.
+# Do NOT edit placeholder values here — all substitutions are injected
+# automatically from Terraform resource attributes at apply time.
+
+Region: ${region}
+
+Image:
+  Os: alinux2
+%{ if head_node_custom_ami != null }
+  CustomAmi: ${head_node_custom_ami}
+%{ endif }
+
+HeadNode:
+  InstanceType: ${head_node_instance_type}
+  Networking:
+    SubnetId: ${subnet_id}
+  Ssh:
+    KeyName: ${key_name}
+%{ if head_node_bootstrap_script_s3_uri != null }
+  CustomActions:
+    OnNodeConfigured:
+      Script: ${head_node_bootstrap_script_s3_uri}
+%{ endif }
+  Iam:
+    AdditionalIamPolicies:
+      - Policy: arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+%{ if head_node_s3_policy_arn != null }
+      - Policy: ${head_node_s3_policy_arn}
+%{ endif }
+
+Scheduling:
+  Scheduler: slurm
+  SlurmSettings:
+    QueueUpdateStrategy: TERMINATE
+    ScaledownIdletime: ${scaledown_idle_time}
+  SlurmQueues:
+    - Name: small
+      CapacityType: ONDEMAND
+      Networking:
+        SubnetIds:
+          - ${subnet_id}
+      ComputeResources:
+        - Name: c6i4xlarge
+          InstanceType: c6i.4xlarge
+          MinCount: 0
+          MaxCount: ${queue_small_max_count}
+      Iam:
+        AdditionalIamPolicies:
+          - Policy: arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        S3Access:
+          - BucketName: ${bootstrap_bucket_name}
+            EnableWriteAccess: false
+      CustomActions:
+        OnNodeConfigured:
+          Script: ${bootstrap_script_s3_uri}
+
+    - Name: standard
+      CapacityType: ONDEMAND
+      Networking:
+        SubnetIds:
+          - ${subnet_id}
+      ComputeResources:
+        - Name: c6i16xlarge
+          InstanceType: c6i.16xlarge
+          MinCount: 0
+          MaxCount: ${queue_standard_max_count}
+      Iam:
+        AdditionalIamPolicies:
+          - Policy: arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        S3Access:
+          - BucketName: ${bootstrap_bucket_name}
+            EnableWriteAccess: false
+      CustomActions:
+        OnNodeConfigured:
+          Script: ${bootstrap_script_s3_uri}
+
+    - Name: large
+      CapacityType: ONDEMAND
+      Networking:
+        SubnetIds:
+          - ${subnet_id}
+      ComputeResources:
+        - Name: c6i24xlarge
+          InstanceType: c6i.24xlarge
+          MinCount: 0
+          MaxCount: ${queue_large_max_count}
+      Iam:
+        AdditionalIamPolicies:
+          - Policy: arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        S3Access:
+          - BucketName: ${bootstrap_bucket_name}
+            EnableWriteAccess: false
+      CustomActions:
+        OnNodeConfigured:
+          Script: ${bootstrap_script_s3_uri}
+
+    - Name: med-memory
+      CapacityType: ONDEMAND
+      Networking:
+        SubnetIds:
+          - ${subnet_id}
+      ComputeResources:
+        - Name: m6i4xlarge
+          InstanceType: m6i.4xlarge
+          MinCount: 0
+          MaxCount: ${queue_med_memory_max_count}
+      Iam:
+        AdditionalIamPolicies:
+          - Policy: arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        S3Access:
+          - BucketName: ${bootstrap_bucket_name}
+            EnableWriteAccess: false
+      CustomActions:
+        OnNodeConfigured:
+          Script: ${bootstrap_script_s3_uri}
+
+    - Name: large-memory
+      CapacityType: ONDEMAND
+      Networking:
+        SubnetIds:
+          - ${subnet_id}
+      ComputeResources:
+        - Name: m6i16xlarge
+          InstanceType: m6i.16xlarge
+          MinCount: 0
+          MaxCount: ${queue_large_memory_max_count}
+      Iam:
+        AdditionalIamPolicies:
+          - Policy: arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        S3Access:
+          - BucketName: ${bootstrap_bucket_name}
+            EnableWriteAccess: false
+      CustomActions:
+        OnNodeConfigured:
+          Script: ${bootstrap_script_s3_uri}
+
+SharedStorage:
+  - MountDir: /shared
+    Name: ${ebs_volume_name}
+    StorageType: Ebs
+    EbsSettings:
+      VolumeId: ${ebs_volume_id}
