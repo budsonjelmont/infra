@@ -15,7 +15,7 @@ variable "aws_profile" {
 # ---- Network Configuration ----
 
 variable "subnet_id" {
-  description = "ID of the subnet for the dev machine and cluster head node. Must be in the same AZ as the shared EBS volume."
+  description = "ID of the subnet for the pclust launcher and cluster head node. Must be in the same AZ as the shared EBS volume."
   type        = string
 }
 
@@ -25,40 +25,32 @@ variable "availability_zone" {
 }
 
 variable "prefix_list_id" {
-  description = "ID of the managed prefix list for SSH/ICMP access to the dev machine."
+  description = "ID of the managed prefix list for SSH/ICMP access to the pclust launcher."
   type        = string
 }
 
-# ---- ParallelCluster API ----
+# ---- Pclust Launcher Configuration ----
 
-variable "pcluster_api_stack_name" {
-  description = "Name of the CloudFormation stack that deploys the ParallelCluster REST API. Used by the aws-parallelcluster provider to auto-discover the API endpoint."
-  type        = string
-  default     = "parallelcluster-api"
-}
-
-# ---- Dev Machine Configuration ----
-
-variable "dev_machine_instance_type" {
-  description = "EC2 instance type for the dev machine that runs the pcluster CLI"
+variable "pclust_launcher_instance_type" {
+  description = "EC2 instance type for the pclust launcher that runs the pcluster CLI"
   type        = string
   default     = "t3.medium"
 }
 
-variable "dev_machine_name_tag" {
-  description = "Name tag for the dev machine EC2 instance"
+variable "pclust_launcher_name_tag" {
+  description = "Name tag for the pclust launcher EC2 instance"
   type        = string
-  default     = "hpc-dev-machine"
+  default     = "hpc-pclust-launcher"
 }
 
 variable "root_volume_type" {
-  description = "Type of root EBS volume for the dev machine"
+  description = "Type of root EBS volume for the pclust launcher"
   type        = string
   default     = "gp3"
 }
 
 variable "root_volume_size_gb" {
-  description = "Size of root EBS volume in GB for the dev machine"
+  description = "Size of root EBS volume in GB for the pclust launcher"
   type        = number
   default     = 50
 }
@@ -66,13 +58,13 @@ variable "root_volume_size_gb" {
 # Ubuntu 22.04 LTS is used instead of RHEL9 for consistency with other dev
 # machines in this repo. Either is supported by ParallelCluster 3.14.
 variable "ami_name_filter" {
-  description = "Filter pattern for AMI name lookup for the dev machine"
+  description = "Filter pattern for AMI name lookup for the pclust launcher"
   type        = string
   default     = "ubuntu/images/hvm-ssd-gp3/ubuntu-jammy-22.04-amd64-server-*"
 }
 
 variable "ami_owners" {
-  description = "List of AMI owner account IDs for the dev machine AMI"
+  description = "List of AMI owner account IDs for the pclust launcher AMI"
   type        = list(string)
   default     = ["amazon"]
 }
@@ -97,9 +89,9 @@ variable "cluster_name" {
 }
 
 variable "head_node_instance_type" {
-  description = "EC2 instance type for the cluster head node"
+  description = "EC2 instance type for the cluster head node. For the default 150-node queue capacity, use at least 6.6 GB RAM (for example, t3.large)."
   type        = string
-  default     = "t3.medium"
+  default     = "t3.large"
 }
 
 # ---- Shared Storage ----
@@ -162,7 +154,7 @@ variable "queue_large_memory_max_count" {
 # ---- IAM / S3 ----
 
 variable "readonly_s3_bucket_access" {
-  description = "List of S3 bucket ARNs (bucket ARN only, no /*) that both the dev machine and cluster head node can access with ListBucket, GetBucketLocation, and GetObject"
+  description = "List of S3 bucket ARNs (bucket ARN only, no /*) that both the pclust launcher and cluster head node can access with ListBucket, GetBucketLocation, and GetObject"
   type        = list(string)
   default     = []
 }
@@ -200,21 +192,21 @@ variable "head_node_custom_ami" {
 # ---- Resource Names ----
 
 variable "security_group_name" {
-  description = "Name of the dev machine security group"
+  description = "Name of the pclust launcher security group"
   type        = string
-  default     = "hpc-dev-machine-sg"
+  default     = "hpc-pclust-launcher-sg"
 }
 
 variable "iam_role_name" {
-  description = "Name of the dev machine IAM role"
+  description = "Name of the pclust launcher IAM role"
   type        = string
-  default     = "hpc-dev-machine-role"
+  default     = "hpc-pclust-launcher-role"
 }
 
 variable "iam_instance_profile_name" {
-  description = "Name of the dev machine IAM instance profile"
+  description = "Name of the pclust launcher IAM instance profile"
   type        = string
-  default     = "hpc-dev-machine-profile"
+  default     = "hpc-pclust-launcher-profile"
 }
 
 # ---- Tags ----

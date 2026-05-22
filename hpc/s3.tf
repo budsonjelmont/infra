@@ -55,3 +55,12 @@ resource "aws_s3_object" "head_node_bootstrap" {
   source = "${path.module}/scripts/head_node_bootstrap.sh"
   etag   = filemd5("${path.module}/scripts/head_node_bootstrap.sh")
 }
+
+# Upload the rendered cluster config used by the launcher machine to run
+# pcluster create-cluster in hybrid mode.
+resource "aws_s3_object" "cluster_config" {
+  bucket  = aws_s3_bucket.bootstrap.id
+  key     = local.cluster_config_key
+  content = local.cluster_config_yaml
+  etag    = md5(local.cluster_config_yaml)
+}

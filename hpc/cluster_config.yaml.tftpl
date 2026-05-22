@@ -1,12 +1,12 @@
-# ParallelCluster 3.14 SLURM cluster configuration template.
-# Rendered by Terraform via templatefile() in cluster.tf.
+# ParallelCluster 3.15.0 SLURM cluster configuration template.
+# Rendered by Terraform via templatefile() in cluster.tf and uploaded to S3.
 # Do NOT edit placeholder values here — all substitutions are injected
 # automatically from Terraform resource attributes at apply time.
 
 Region: ${region}
 
 Image:
-  Os: alinux2
+  Os: alinux2023
 %{ if head_node_custom_ami != null }
   CustomAmi: ${head_node_custom_ami}
 %{ endif }

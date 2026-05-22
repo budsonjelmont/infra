@@ -13,14 +13,9 @@ subnet_id         = "subnet-xxxxxxxxxxxxxxxxx"
 availability_zone = "us-east-1a"
 prefix_list_id    = "pl-xxxxxxxxxxxxxxxxx"
 
-# ---- ParallelCluster API ----
-# Name of the CloudFormation stack that will host the ParallelCluster REST API.
-# This name is also used by the aws-parallelcluster provider to find the endpoint.
-pcluster_api_stack_name = "parallelcluster-api"
-
-# ---- Dev Machine Configuration ----
-dev_machine_instance_type = "t3.medium"
-dev_machine_name_tag      = "jxb-pclust-launcher"
+# ---- Pclust Launcher Configuration ----
+pclust_launcher_instance_type = "t3.medium"
+pclust_launcher_name_tag      = "jxb-pclust-launcher"
 root_volume_type          = "gp3"
 root_volume_size_gb       = 50
 
@@ -28,12 +23,12 @@ ami_name_filter = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*"
 ami_owners      = ["amazon"]
 
 # ---- SSH ----
-ssh_key_name   = "hpc-keypair"
+ssh_key_name   = "jxb-pclust-keypair"
 ssh_public_key = "ssh-rsa AAAA...replace_with_your_actual_public_key..."
 
 # ---- Cluster Configuration ----
 cluster_name            = "jxb-pclust"
-head_node_instance_type = "t3.medium"
+head_node_instance_type = "t3.large"
 
 # ---- Shared Storage ----
 shared_volume_size_gb = 1000
@@ -48,7 +43,7 @@ queue_med_memory_max_count     = 30
 queue_large_memory_max_count   = 30
 
 # ---- IAM / S3 ----
-# Bucket-level access for BOTH EC2s (dev machine + cluster head node).
+# Bucket-level access for BOTH EC2s (pclust launcher + cluster head node).
 # Use bucket ARNs only (no /*). Grants s3:ListBucket, s3:GetBucketLocation,
 # and s3:GetObject on all objects in the bucket.
 readonly_s3_bucket_access = [
@@ -70,7 +65,7 @@ enable_head_node_bootstrap = false
 scaledown_idle_time = 5
 
 # ---- Custom AMIs (optional) ----
-# Leave commented out to use the default ParallelCluster AMI for alinux2.
+# Leave commented out to use the default ParallelCluster AMI for alinux2023.
 # head_node_custom_ami = "ami-xxxxxxxxxxxxxxxxx"
 
 # ---- Resource Names ----

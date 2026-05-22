@@ -1,8 +1,8 @@
-# Security group for the dev machine only.
+# Security group for the pclust launcher only.
 # ParallelCluster automatically manages its own security groups for the
 # head node and compute nodes — those are not defined here.
 
-resource "aws_security_group" "dev_machine" {
+resource "aws_security_group" "pclust_launcher" {
   name   = var.security_group_name
   vpc_id = data.aws_subnet.cluster.vpc_id
 
@@ -12,8 +12,8 @@ resource "aws_security_group" "dev_machine" {
   )
 }
 
-resource "aws_vpc_security_group_ingress_rule" "dev_machine_ssh" {
-  security_group_id = aws_security_group.dev_machine.id
+resource "aws_vpc_security_group_ingress_rule" "pclust_launcher_ssh" {
+  security_group_id = aws_security_group.pclust_launcher.id
 
   prefix_list_id = data.aws_ec2_managed_prefix_list.hpc.id
   from_port      = 22
@@ -21,8 +21,8 @@ resource "aws_vpc_security_group_ingress_rule" "dev_machine_ssh" {
   to_port        = 22
 }
 
-resource "aws_vpc_security_group_ingress_rule" "dev_machine_ping" {
-  security_group_id = aws_security_group.dev_machine.id
+resource "aws_vpc_security_group_ingress_rule" "pclust_launcher_ping" {
+  security_group_id = aws_security_group.pclust_launcher.id
 
   prefix_list_id = data.aws_ec2_managed_prefix_list.hpc.id
   from_port      = 8
@@ -30,8 +30,8 @@ resource "aws_vpc_security_group_ingress_rule" "dev_machine_ping" {
   to_port        = -1
 }
 
-resource "aws_vpc_security_group_egress_rule" "dev_machine" {
-  security_group_id = aws_security_group.dev_machine.id
+resource "aws_vpc_security_group_egress_rule" "pclust_launcher" {
+  security_group_id = aws_security_group.pclust_launcher.id
 
   cidr_ipv4   = "0.0.0.0/0"
   from_port   = -1
